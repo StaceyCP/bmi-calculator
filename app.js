@@ -1,20 +1,29 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const ejs = require("ejs");
 const app = express();
 
 app.use(bodyParser.urlencoded({extended: true}));
 
+app.set('view engine', 'ejs');
+
 app.use(express.static(__dirname + "/public"));
 
-app.get("/", function(req, res){
-    res.sendFile(__dirname + "/index.html");
+let bmi = [];
+
+app.get("/", (req, res) => {
+    res.render("calculator");
 });
 
-app.post("/", function(req, res){
+app.get("/result", (req, res) => {
+    res.render("result", {result: bmi})
+});
+
+app.post("/", (req, res) => {
     var weight = Number(req.body.weight);
     var height = Number(req.body.height);
-    var result = Math.round((weight / (height*height)) * 10000);
-    res.send("<h1>Your BMI is: " + result);
+    bmi.push(Math.round((weight / (height*height)) * 10000));
+    res.redirect("result");
 })
 
 app.listen(3000, function(){
