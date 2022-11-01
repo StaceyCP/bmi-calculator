@@ -9,7 +9,7 @@ app.set('view engine', 'ejs');
 
 app.use(express.static(__dirname + "/public"));
 
-let bmi = [];
+let bmi;
 
 app.get("/", (req, res) => {
     res.render("calculator");
@@ -22,7 +22,7 @@ app.get("/result", (req, res) => {
 app.post("/", (req, res) => {
     var weight = Number(req.body.weight);
     var height = Number(req.body.height);
-    bmi.push(Math.round((weight / (height*height)) * 10000));
+    bmi = (Math.round((weight / (height*height)) * 10000));
     res.redirect("result");
 })
 
